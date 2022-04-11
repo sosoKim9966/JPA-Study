@@ -1,5 +1,7 @@
 package com.go.jpastudy.config.auth;
 
+import com.go.jpastudy.config.auth.dto.OAuthAttributes;
+import com.go.jpastudy.config.auth.dto.SessionUser;
 import com.go.jpastudy.domain.user.User;
 import com.go.jpastudy.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +32,20 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
 
+        /**
+         * registrationId -> 현재 로그인 진행 중인 서비스를 구분하는 코드
+         *                   소셜 로그인 구분 값
+         * userNameAttributeName -> OAuth2 로그인 진행 시 키가 되는 필드값 PK
+         *                          구글 기본 코드 = sub
+         *                          네이버 로그인과 구글 로그인을 동시 지원할 때 사용
+         * OAuthAttributes -> OAuth2UserService를 통해 가져온 OAuth2User의 attribute를 담을 클래스
+         *                    이후 네이버 등 다른 소셜 로그인도 이 클래스를 사용
+         */
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
+        /**
+         * SessionUser -> 세션에 사용자 정보를 저장하고 위한 Dto
+         */
         User user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", new SessionUser(user));
 
@@ -42,6 +56,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
 
+    /**
+     * 구글 사용자 정보가 업데이트 되었을 때를 대비한 update 기능
+     * 사용자 이름, 프로필 사진이 변경되면 User 엔티티에 반영
+     * @param attributes
+     * @return
+     */
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
