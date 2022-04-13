@@ -25,12 +25,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2UserService delegate = new DefaultOAuth2UserService();
+        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
-
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
-                .getUserInfoEndpoint().getUserNameAttributeName();
 
         /**
          * registrationId -> 현재 로그인 진행 중인 서비스를 구분하는 코드
@@ -38,6 +34,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
          * userNameAttributeName -> OAuth2 로그인 진행 시 키가 되는 필드값 PK
          *                          구글 기본 코드 = sub
          *                          네이버 로그인과 구글 로그인을 동시 지원할 때 사용
+         */
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
+                .getUserInfoEndpoint().getUserNameAttributeName();
+
+        /**
          * OAuthAttributes -> OAuth2UserService를 통해 가져온 OAuth2User의 attribute를 담을 클래스
          *                    이후 네이버 등 다른 소셜 로그인도 이 클래스를 사용
          */
