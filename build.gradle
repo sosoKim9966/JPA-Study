@@ -36,10 +36,6 @@ test {
     useJUnitPlatform()
 }
 
-jar {
-    enabled = false
-}
-
-bootJar {
+tasks.jar {
     enabled = true
 }
