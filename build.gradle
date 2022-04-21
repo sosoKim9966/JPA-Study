@@ -39,5 +39,5 @@ test {
 tasks.jar {
     enabled = true
     // Remove `plain` postfix from jar file name
-    archiveClassifier.set("")
+    archiveClassifier.set("plain")
 }
