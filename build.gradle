@@ -37,7 +37,12 @@ test {
 }
 
 jar {
-    enabled = true
-    archiveClassifier = ''
+    enabled = false
+}
+
+bootJar {
+    archivesBaseName = 'sosokim'
+    archiveFileName = 'sosokim.jar'
+    archiveVersion = "0.0.0"
 }
 
