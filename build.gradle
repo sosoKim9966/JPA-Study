@@ -37,5 +37,6 @@ test {
 }
 
 jar {
-    enabled = false
+    enabled = true
+    archiveClassifier = ''
 }
