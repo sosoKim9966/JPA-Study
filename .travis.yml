@@ -22,3 +22,6 @@ notifications:
   email:
     recipients:
       - sosokim9966@gmail.com
+
+before_script:
+  - chmod +x gradlew
