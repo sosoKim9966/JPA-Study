@@ -25,3 +25,17 @@ notifications:
   email:
     recipients:
       - sosokim9966@gmail.com
+
+before_deploy:
+  - zip -r JPA-Study
+  - mkdir -p deploy
+  - mv JPA-Study.zip deploy/JPA-Study.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: @AWS_SECRET_KEY
+
+    bucket: sosokim-springboot-build
+    region: ap-northeast-2
+    skip_cleanup: true
