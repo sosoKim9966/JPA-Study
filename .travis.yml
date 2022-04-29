@@ -21,7 +21,7 @@ cache:
 script: "./gradlew clean build"
 
 before_deploy:
-  - zip -r JPA-Study
+  - zip -r JPA-Study *
   - mkdir -p deploy
   - mv JPA-Study.zip deploy/JPA-Study.zip
 
