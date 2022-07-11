@@ -127,6 +127,9 @@ public class PostsRepositoryTest {
         assertThat(posts.getContent()).isEqualTo(content);
     }
 
+    /**
+     * BaseTimeEntity 등록 테스트
+     */
     @Test
     public void BaseTimeEntity_등록() {
         //given
